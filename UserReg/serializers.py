@@ -9,4 +9,9 @@ class UserRegSerializer(serializers.ModelSerializer):
 
         #fields = ["user_id","user_name"]
 
-
+    '''
+    def validate(self,attrs):
+        instance = UserRegistration(**attrs)
+        instance.clean()
+        return attrs
+    '''
