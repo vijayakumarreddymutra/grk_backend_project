@@ -65,3 +65,62 @@ def update_user_partial_data(request,id):
         user_reg.save()
         return Response({"Success Message":"User Has Update"},status=status.HTTP_206_PARTIAL_CONTENT)
     return Response(user_reg.errors)
+
+
+@api_view(["PUT"])
+def update_user_data(request,id):
+
+    try:
+        user_data = UserRegistration.objects.get(user_id=id)
+
+    except UserRegistration.DoesNotExist:
+
+        return Response({"UserID": "User ID does not exist."},status=status.HTTP_404_NOT_FOUND)
+
+    user_reg = UserRegSerializer(user_data,data=request.data)   #here request.data = dict format we give in postman
+    
+    if user_reg.is_valid():
+        #print(type(user_reg.validated_data))
+        user_reg.save()
+        return Response({"Success Message":"User data has been Update"},status=status.HTTP_202_ACCEPTED)
+    return Response(user_reg.errors, status=status.HTTP_226_IM_USED)
+
+
+
+@api_view(["DELETE"])
+def user_delete(request,id):
+
+    try:
+        user_data = UserRegistration.objects.get(user_id=id)
+
+    except UserRegistration.DoesNotExist:
+
+        return Response({"UserID": "User ID does not exist."},status=status.HTTP_404_NOT_FOUND)
+
+    user_data.delete()
+    return Response({"Message":"User has been deleted Successfully"})
+
+
+@api_view(["DELETE"])
+def all_users_delete(request):
+
+    users_data = UserRegistration.objects.all()
+
+    users_data.delete()
+
+    return Response({"Message":"Users has been deleted Successfully"})
+
+
+
+#query parameters
+
+@api_view(["GET"])
+def filter_user_Data_using_query(request):
+    id = request.query_params.get("user_id")
+    email = request.query_params.get("user_email")
+    print(request.query_params)
+    user_data  = UserRegistration.objects.filter(user_id=id,user_email=email)
+
+    serializer = UserRegSerializer(user_data, many=True)
+    print(serializer)
+    return Response(serializer.data,status=status.HTTP_200_OK)
