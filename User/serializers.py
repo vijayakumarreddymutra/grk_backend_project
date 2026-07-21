@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Registration
 #from rest_framework.exceptions import ValidationError
 
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 from .validators import *
 
@@ -32,4 +32,20 @@ class SignUPRegistrationSer(serializers.ModelSerializer):
 
          validated_data["password"] = make_password(validated_data["password"])
 
-         return Registration.objects.create(**validated_data)
+         return Registration.objects.create(**validated_data)  #instead of dict, we can change this to keyword vvariable length
+    
+
+    class LoginSerializer(serializers.Serializer):
+        email = serializers.EmailField()
+        password = serializers.CharField()
+
+        def validate(self,attrs):
+         
+            try:
+                user = Registration.objects.get(user_email = attrs["email"])
+
+            except Registration.DoesNotExist:
+                raise serializers.ValidationError({"EMail":"EMail is not exists"})
+            
+            if not check_password(attrs["password"], user.password):
+                 raise serializers.ValidationError({"Password":"Password is incorrect"})

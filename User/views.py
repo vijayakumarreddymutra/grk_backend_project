@@ -17,3 +17,4 @@ def new_user_registration(request):
         user_ser.save()
         return Response({"Message":"User Registered Successfully"}, status=status.HTTP_201_CREATED)
     return Response(user_ser.errors, status=status.HTTP_400_BAD_REQUEST)
+
