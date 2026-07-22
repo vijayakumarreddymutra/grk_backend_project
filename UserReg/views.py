@@ -1,7 +1,7 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import UserRegistration
-
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from django.core.exceptions import ObjectDoesNotExist
 from .serializers import UserRegSerializer
@@ -31,6 +31,7 @@ def user_creation(request):
     return Response(user_reg.errors)
 
 @api_view(["GET"])
+
 def get_all_users_data(request):
     user_data = UserRegistration.objects.all()
     print(user_data)

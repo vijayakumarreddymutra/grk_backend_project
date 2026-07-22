@@ -35,17 +35,21 @@ class SignUPRegistrationSer(serializers.ModelSerializer):
          return Registration.objects.create(**validated_data)  #instead of dict, we can change this to keyword vvariable length
     
 
-    class LoginSerializer(serializers.Serializer):
-        email = serializers.EmailField()
-        password = serializers.CharField()
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
 
-        def validate(self,attrs):
+    def validate(self,attrs):   #here attrs means dict(email and password)
          
-            try:
-                user = Registration.objects.get(user_email = attrs["email"])
+        try:
+            user = Registration.objects.get(user_email = attrs["email"])
 
-            except Registration.DoesNotExist:
-                raise serializers.ValidationError({"EMail":"EMail is not exists"})
+        except Registration.DoesNotExist:
+            raise serializers.ValidationError({"EMail":"EMail is not exists"})
             
-            if not check_password(attrs["password"], user.password):
-                 raise serializers.ValidationError({"Password":"Password is incorrect"})
+        if not check_password(attrs["password"], user.password):
+            raise serializers.ValidationError({"Password":"Password is incorrect"})
+            
+        attrs["user"] = user
+
+        return attrs
