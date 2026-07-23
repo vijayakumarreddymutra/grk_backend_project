@@ -9,15 +9,18 @@ import secrets
 
 # Create your views here.
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def homepage(request):
     return Response({"Message":"Welcome all!"})
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def homepage1(request):
     return Response({"Message":"Welcome all!"})
 
 @api_view(["POST"])
+@permission_classes([IsAuthenticated])
 def user_creation(request):
     print(f"method name :{request.method}")
     user_reg = UserRegSerializer(data=request.data)   #here request.data = dict format we give in postman
@@ -31,7 +34,7 @@ def user_creation(request):
     return Response(user_reg.errors)
 
 @api_view(["GET"])
-
+@permission_classes([IsAuthenticated])
 def get_all_users_data(request):
     user_data = UserRegistration.objects.all()
     print(user_data)
@@ -40,6 +43,7 @@ def get_all_users_data(request):
     return Response(serializer.data,status=status.HTTP_200_OK)
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def generate_otp(request,mobile):
     user_data = UserRegistration.objects.filter(user_mobile=mobile)
 
@@ -50,6 +54,7 @@ def generate_otp(request,mobile):
     return Response({"Message":"Invalid mobile num"})
 
 @api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
 def update_user_partial_data(request,id):
 
     try:
@@ -69,6 +74,7 @@ def update_user_partial_data(request,id):
 
 
 @api_view(["PUT"])
+@permission_classes([IsAuthenticated])
 def update_user_data(request,id):
 
     try:
@@ -89,6 +95,7 @@ def update_user_data(request,id):
 
 
 @api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
 def user_delete(request,id):
 
     try:
@@ -103,6 +110,7 @@ def user_delete(request,id):
 
 
 @api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
 def all_users_delete(request):
 
     users_data = UserRegistration.objects.all()
@@ -116,6 +124,7 @@ def all_users_delete(request):
 #query parameters
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 def filter_user_Data_using_query(request):
     id = request.query_params.get("user_id")
     email = request.query_params.get("user_email")

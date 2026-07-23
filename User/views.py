@@ -1,11 +1,11 @@
-from django.shortcuts import render
+
 
 # Create your views here.
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import SignUPRegistrationSer, LoginSerializer
-
+from .utilities import get_tokens
 
 #post method to create a new user registration
 
@@ -25,8 +25,11 @@ def login(request):
 
     if user_data.is_valid():
         user = user_data.validated_data["user"]   #here validated_data is equal to attrs in serializer
-
-        return Response({"message":"Login Successfull"},status=status.HTTP_200_OK)
+        tokens = get_tokens(user)
+        return Response({"message":"Login Successfull",
+                         "access_token": tokens["access"],
+                        "refresh_token": tokens["refresh"]},
+                        status=status.HTTP_200_OK)
     
     return Response(user_data.errors,status=status.HTTP_401_UNAUTHORIZED)
     

@@ -1,0 +1,22 @@
+Email + Password
+        │
+        ▼
+LoginSerializer.validate()
+        │
+        ▼
+Registration Object
+        │
+        ▼
+get_tokens(user)
+        │
+        ▼
+RefreshToken()
+        │
+        ├── refresh["user_id"] = user.user_reg
+        ├── refresh["email"] = user.user_email
+        │
+        ▼
+Create Access Token
+        │
+        ▼
+Return Both Tokens

@@ -27,6 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "User.authentication.RegistrationJWTAuthentication",
+    )
+}
+
 
 
 # Application definition

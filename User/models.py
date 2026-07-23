@@ -22,3 +22,7 @@ class Registration(models.Model):
 
     class Meta:
         db_table = "registration"
+    
+    @property
+    def is_authenticated(self):
+        return True    
