@@ -9,6 +9,32 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+LOGGING = {
+    "version" : 1,
+    "disable_existing_loggers": False,
+    "formatters" :{
+        "standard":{
+            "format" :"{asctime} {levelname} {message}",
+            "style" : "{",
+        },
+    },
+    "handlers" :{
+        "file":{
+            "level":"DEBUG",
+            "class" :"logging.FileHandler",
+            "filename" :"hospital.log",
+            "formatter" :"standard",
+        },
+    },
+    "loggers": {
+        "root": {   # Root logger
+            "handlers": ["file"],
+            "level": "DEBUG",
+        },
+    },
+}
+
+
 
 from pathlib import Path
 

@@ -7,6 +7,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from .serializers import UserRegSerializer
 import secrets
 
+import logging
+
+logs = logging.getLogger(__name__)
+
 # Create your views here.
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
@@ -36,10 +40,12 @@ def user_creation(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def get_all_users_data(request):
+    logs.info("User tried to access all the users")
     user_data = UserRegistration.objects.all()
     print(user_data)
     serializer = UserRegSerializer(user_data, many=True)
     print(serializer)
+    logs.info("User got all the users list")
     return Response(serializer.data,status=status.HTTP_200_OK)
 
 @api_view(["GET"])
